@@ -5,6 +5,7 @@ import folium
 import geodatasets
 import webbrowser
 from folium import Popup, Tooltip
+from folium.plugins import MarkerCluster
 
 
 # loading data
@@ -24,14 +25,21 @@ marker_location = [33.4484, -112.0740]
 # marking location
 folium.Marker(location=marker_location,
               popup='testing').add_to(phoenix_map)
-
+# html code for popup
 popup_content = """
 <div style="width:200px">
     <h4>Testing</h4>
-    <p>This is a test marker with additional information in a popup.</p>
+    <p>menu options.</p>
+    <label for="pages">Choose a page:</label>
+    <select id="pages" name="pages" onchange="location = this.value;">
+        <option value="">Select...</option>
+        <option value="https://example.com/page1">page 1</option>
+        <option value="https://example.com/page2">page 2</option>
+        <option value="https://example.com/page3">page 3</option>
+    </select>
 </div>
 """
-tooltip_content = "Click here for more info"
+tooltip_content = "click for info"
 
 folium.Marker(
     location=marker_location,
