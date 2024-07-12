@@ -1,5 +1,6 @@
 # Load libraries
 import pandas as pd
+import numpy as np
 from sklearn.tree import export_text
 from sklearn.tree import DecisionTreeClassifier # Import Decision Tree Classifier
 from sklearn.model_selection import train_test_split # Import train_test_split function
@@ -23,7 +24,7 @@ print(data.columns)
 feature_cols = ['X', 'Y']
 X = data[feature_cols]
 y = data.DESCRIPTION
-x_train, x_test, y_train, y_test = train_test_split(X, y, test_size = 0.375, random_state = 1)
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size = 0.10, random_state = 1)
 clf = DecisionTreeClassifier()
 clf = clf.fit(x_train, y_train)
 y_pred = clf.predict(x_test)
@@ -31,23 +32,30 @@ y_pred = clf.predict(x_test)
 print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 
 #UV index API for 6 zip codes, saving it into the zdf Pandas Dataframe
-phoenix_zipcodes = ["85003", "85004", "85006", "85007", "85008", "85009"]
+phoenix_zipcodes = open("zip_codes.txt", "r")
 zdf = pd.DataFrame()
 for z in phoenix_zipcodes:
+    z = z.rstrip()
     url = "https://data.epa.gov/efservice/getEnvirofactsUVHOURLY/ZIP/"+z+"/JSON"
     response = requests.get(url)
-    result = pd.DataFrame(response.json())
-    zip_data = result[['ZIP', 'DATE_TIME', 'UV_VALUE']]
-    zip_data = zip_data.query('UV_VALUE > 2')
-    zdf = zdf._append(zip_data, ignore_index=True)
+    if response.status_code == 200:
+        result = pd.DataFrame(response.json())
+        zip_data = result[['ZIP', 'DATE_TIME', 'UV_VALUE']]
+        zip_data = zip_data.query('UV_VALUE > 7')
+        zdf = zdf._append(zip_data, ignore_index=True)
 #filter out entries where the uv is greater than 
 print(zdf.head())
 
 #decision tree
+## I am setting the threshold for add infrastructure to be UV >= 7, but this can change
+def add_infrastructure(row):
+    return 1 if row['UV_VALUE'] >= 7 else 0    
+
+zdf['target'] = zdf.apply(add_infrastructure, axis = 1)
 uv_feature_cols = ['ZIP', 'UV_VALUE']
 uvX = zdf[uv_feature_cols]
-uvy = zdf.DATE_TIME
-uvx_train, uvx_test, uvy_train, uvy_test = train_test_split(uvX, uvy, test_size = 0.375, random_state = 1)
+uvy = zdf['target']
+uvx_train, uvx_test, uvy_train, uvy_test = train_test_split(uvX, uvy, test_size = 0.4, random_state = 1)
 uv_clf = DecisionTreeClassifier()
 uv_clf = uv_clf.fit(uvx_train, uvy_train)
 uvy_pred = uv_clf.predict(uvx_test)
