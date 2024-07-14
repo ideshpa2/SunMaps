@@ -7,15 +7,22 @@ import geodatasets
 import webbrowser
 from folium import Popup, Tooltip
 from folium.plugins import MarkerCluster
-
+import branca.colormap as cm
+import testscikit
 
 # loading data
 phoenix = geodatasets.get_path("geoda.phoenix_acs")
 gdf = gpd.read_file(phoenix)
 gdfzoning = gpd.read_file("Zoning.shp")
-csv = gdfzoning.to_csv('output.csv')
 
+#UV index by Zip Code
+gdf_zipcodes = gpd.read_file("Zip_Code_Stuff/Zip_Codes.shp")[['ZCTA5CE10','geometry']]
+gdf_zipcodes = gdf_zipcodes.rename(columns = {"ZCTA5CE10": "ZIP", "geometry": "geometry"}).dropna(subset = ['UV_VALUE'], inplace = True)
+uv = testscikit.zdf
+print(gdf_zipcodes)
 
+gdf_zipcodes = gdf_zipcodes.merge(uv, on="ZIP")
+print(gdf_zipcodes.head())
 
 # centering map
 center = [gdf.geometry.centroid.y.mean(), gdf.geometry.centroid.x.mean()]
@@ -23,6 +30,7 @@ phoenix_map = folium.Map(location=center, zoom_start=10)
 
 
 folium.GeoJson(gdf).add_to(phoenix_map)
+folium.GeoJson(gdf_zipcodes).add_to(phoenix_map)
 # coords for most walkable phx area
 marker_location = [33.4484, -112.0740]
 

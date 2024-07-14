@@ -17,7 +17,7 @@ clf = tree.DecisionTreeClassifier()
 clf = clf.fit(X,y)
 r = export_text(clf, feature_names=iris['feature_names'])"""
 
-#ecostation decision tree
+"""ecostation decision tree
 col_names = ['_id','X','Y','OBJECTID','FULL_ADDRE','WEBSITE','NAME','DESCRIPTION']
 data = pd.read_csv("ecostations.csv", header = None, names = col_names)
 print(data.columns)
@@ -29,26 +29,30 @@ clf = DecisionTreeClassifier()
 clf = clf.fit(x_train, y_train)
 y_pred = clf.predict(x_test)
 # Model Accuracy, how often is the classifier correct?
-print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+print("Accuracy:",metrics.accuracy_score(y_test, y_pred))"""
+#Everything above this point was used for practicing/testing purposes.
 
-#UV index API for 6 zip codes, saving it into the zdf Pandas Dataframe
-phoenix_zipcodes = open("zip_codes.txt", "r")
-zdf = pd.DataFrame()
+
+#zip_code.txt = a list of all zip codes in Phoenix
+phoenix_zipcodes = open("Zip_Code_Stuff/zip_codes.txt", "r")
+dict = {'ZIP': [], 'UV_VALUE': []}
+zdf = pd.DataFrame(dict)
 for z in phoenix_zipcodes:
     z = z.rstrip()
+    avg_uv = 0
     url = "https://data.epa.gov/efservice/getEnvirofactsUVHOURLY/ZIP/"+z+"/JSON"
     response = requests.get(url)
     if response.status_code == 200:
         result = pd.DataFrame(response.json())
-        zip_data = result[['ZIP', 'DATE_TIME', 'UV_VALUE']]
-        zip_data = zip_data.query('UV_VALUE > 7')
-        zdf = zdf._append(zip_data, ignore_index=True)
-#filter out entries where the uv is greater than 
-print(zdf.head())
+        zip_data = result[['UV_VALUE']].query('UV_VALUE > 2')
+        avg_uv = zip_data['UV_VALUE'].mean()
+        new_row = {'ZIP': z, 'UV_VALUE':avg_uv}
+        zdf = zdf._append(new_row, ignore_index=True)
+
 
 #decision tree
 ## I am setting the threshold for add infrastructure to be UV >= 7, but this can change
-def add_infrastructure(row):
+"""def add_infrastructure(row):
     return 1 if row['UV_VALUE'] >= 7 else 0    
 
 zdf['target'] = zdf.apply(add_infrastructure, axis = 1)
@@ -61,4 +65,4 @@ uv_clf = uv_clf.fit(uvx_train, uvy_train)
 uvy_pred = uv_clf.predict(uvx_test)
 # Model Accuracy, how often is the classifier correct?
 print("Accuracy:",metrics.accuracy_score(uvy_test, uvy_pred))
-print(export_text(uv_clf))
+print(export_text(uv_clf))"""
