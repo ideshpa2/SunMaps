@@ -17,7 +17,7 @@ gdfzoning = gpd.read_file("Zoning.shp")
 
 #UV index by Zip Code
 gdf_zipcodes = gpd.read_file("Zip_Code_Stuff/Zip_Codes.shp")[['ZCTA5CE10','geometry']]
-gdf_zipcodes = gdf_zipcodes.rename(columns = {"ZCTA5CE10": "ZIP", "geometry": "geometry"}).dropna(subset = ['UV_VALUE'], inplace = True)
+gdf_zipcodes = gdf_zipcodes.rename(columns = {"ZCTA5CE10": "ZIP", "geometry": "geometry"})#.dropna(subset = ['UV_VALUE'], inplace = True)
 uv = testscikit.zdf
 print(gdf_zipcodes)
 
@@ -59,6 +59,19 @@ folium.Marker(
     tooltip=Tooltip(tooltip_content)
 ).add_to(phoenix_map)
 
+#putting UV data on the GUI
+folium.Choropleth(    
+    geo_data = gdf_zipcodes,
+    name = 'Choropleth',
+    data = gdf_zipcodes,
+    columns=['ZIP','UV_VALUE'],
+    nan_fill_color='purple',
+    key_on="feature.properties.ZIP",
+    fill_color = 'OrRd',
+    fill_opacity = 1,
+    line_opacity=0.2,
+    legend_name='Average UV Value',
+    smooth_factor=0).add_to(phoenix_map)
 
 # saving map
 
