@@ -1,5 +1,6 @@
 # importing
 import geopandas as gpd
+import pandas as pd
 import matplotlib.pyplot as plt
 import folium
 import geodatasets
@@ -12,13 +13,16 @@ from folium.plugins import MarkerCluster
 phoenix = geodatasets.get_path("geoda.phoenix_acs")
 gdf = gpd.read_file(phoenix)
 gdfzoning = gpd.read_file("Zoning.shp")
+csv = gdfzoning.to_csv('output.csv')
+
+
 
 # centering map
 center = [gdf.geometry.centroid.y.mean(), gdf.geometry.centroid.x.mean()]
 phoenix_map = folium.Map(location=center, zoom_start=10)
 
-folium.GeoJson(gdf).add_to(phoenix_map)
 
+folium.GeoJson(gdf).add_to(phoenix_map)
 # coords for most walkable phx area
 marker_location = [33.4484, -112.0740]
 
@@ -49,9 +53,12 @@ folium.Marker(
 
 
 # saving map
+
+folium.LayerControl().add_to(phoenix_map)
 phoenix_map.save("phoenix_interactive.html")
 ax = gdfzoning.plot()
 plt.savefig("zoning.png")
 
 # opening
 webbrowser.open("phoenix_interactive.html")
+
