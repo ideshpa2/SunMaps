@@ -1,0 +1,11 @@
+<style>
+  <name>Heat_morbidities_by_census_tract_2012_to_2016</name>
+  <workspace>
+    <name>geonode</name>
+  </workspace>
+  <format>sld</format>
+  <languageVersion>
+    <version>1.1.0</version>
+  </languageVersion>
+  <filename>Heat_morbidities_by_census_tract_2012_to_2016.sld</filename>
+</style>
