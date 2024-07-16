@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Folium Map</title>
+    <style>
+        /* Ensure body and html have full height */
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: Verdana, Geneva, Tahoma, sans-serif
+        }
+        .container {
+            display:flex;
+            height: 100%;
+            width: 100%;
+        }
+        .side-menu{
+            width:250px;
+            background-color: burlywood;
+            padding: 20px
+        
+        }
+        .side-menu h2 {
+            margin-top: 0;
+        }
+        .side-menu ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .side-menu ul li {
+            margin-bottom: 10px;
+        }
+        .map-container {
+            flex-grow: 1;
+            height: 100%;
+        }
+        /* Ensure iframe takes up full container size */
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <h1>SunMaps</h1>
+    <div class="map-container">
+        <iframe src="phoenix_interactive.html"></iframe>
+    </div>
+    <h2>Sustainable Insights for Phoenix Urban Planning</h2>
+    <div class = "Menu">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="#">Link 1</a></li>
+            <li><a href="#">Link 2</a></li>
+            <li><a href="#">Link 3</a></li>
+            <li><a href="#">Link 4</a></li>
+        </ul>
+    </div>
+    </div>
+</body>
+</html>
