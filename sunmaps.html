@@ -8,32 +8,18 @@
         /* Ensure body and html have full height */
         html, body {
             height: 100%;
+            width: 100%;
             margin: 0;
-            font-family: Verdana, Geneva, Tahoma, sans-serif
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color:blanchedalmond
         }
         .container {
             display:flex;
             height: 100%;
             width: 100%;
         }
-        .side-menu{
-            width:250px;
-            background-color: burlywood;
-            padding: 20px
-        
-        }
-        .side-menu h2 {
-            margin-top: 0;
-        }
-        .side-menu ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        .side-menu ul li {
-            margin-bottom: 10px;
-        }
         .map-container {
-            flex-grow: 1;
+            flex: 4;
             height: 100%;
         }
         /* Ensure iframe takes up full container size */
@@ -42,23 +28,40 @@
             height: 100%;
             border: none;
         }
+        .side-menu{
+            flex: 2;
+            background-color: blanchedalmond;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            border: none;
+            padding: 20px;
+        }
+        .side-menu h2 {
+            margin-top: 10px;
+        }
+        .side-menu ul {
+            list-style-type: none;
+            padding: 10px;
+            width: 100%;
+        }
+        .side-menu ul li {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
     <h1>SunMaps</h1>
+    <h2>Sustainable Insights for Phoenix Urban Planning</h2>
+    <div class="container">
     <div class="map-container">
         <iframe src="phoenix_interactive.html"></iframe>
     </div>
-    <h2>Sustainable Insights for Phoenix Urban Planning</h2>
-    <div class = "Menu">
+    <div class = "side-menu">
         <h2>Menu</h2>
-        <ul>
-            <li><a href="#">Link 1</a></li>
-            <li><a href="#">Link 2</a></li>
-            <li><a href="#">Link 3</a></li>
-            <li><a href="#">Link 4</a></li>
-        </ul>
+            <p>Click on a marker to see more information</p>
     </div>
     </div>
 </body>

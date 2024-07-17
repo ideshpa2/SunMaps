@@ -63,6 +63,9 @@ folium.Marker(
     tooltip=Tooltip(tooltip_content)
 ).add_to(phoenix_map)
 
+
+
+
 #putting datasets on the GUI
 ##uv index
 folium.Choropleth(    
