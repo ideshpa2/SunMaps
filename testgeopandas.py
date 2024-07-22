@@ -23,7 +23,7 @@ print("heat morbidities: \n", gdf_hm.head())
 
 #UV index by Zip Code
 gdf_zipcodes = gpd.read_file("Zip_Code_Stuff/Zip_Codes.shp")[['ZCTA5CE10','geometry']]
-gdf_zipcodes = gdf_zipcodes.rename(columns = {"ZCTA5CE10": "ZIP", "geometry": "geometry"})#.dropna(subset = ['UV_VALUE'], inplace = True)
+gdf_zipcodes = gdf_zipcodes.rename(columns = {"ZCTA5CE10": "ZIP", "geometry": "geometry"})
 uv = testscikit.zdf
 gdf_zipcodes = gdf_zipcodes.merge(uv, on="ZIP")
 print(gdf_zipcodes.head())
@@ -68,7 +68,26 @@ folium.Marker(
 
 #putting datasets on the GUI
 ##uv index
-folium.Choropleth(    
+uv_linear = cm.LinearColormap(["green", "yellow", "red"], vmin=7, vmax=10)
+folium.GeoJson(
+    gdf_zipcodes,
+    style_function=lambda feature: {
+        "fillColor": uv_linear(feature['properties']['ZIP']),
+        "color": "black",
+        "weight": 2,
+    },
+).add_to(phoenix_map)
+
+heatdeath_linear = cm.linear.OrRd_09.scale(0,340)
+folium.GeoJson(
+    gdf_hm,
+    style_function=lambda feature: {
+        "fillColor": uv_linear(feature['properties']["Shape_Area"]),
+        "color": "black",
+        "weight": 2,
+    },
+).add_to(phoenix_map)
+"""folium.Choropleth(    
     geo_data = gdf_zipcodes,
     name = 'UV Index',
     data = gdf_zipcodes,
@@ -76,8 +95,9 @@ folium.Choropleth(
     nan_fill_color='purple',
     key_on="feature.properties.ZIP",
     fill_color = 'OrRd',
+    bins = [7.2,7.5,7.8,8.0,9.0,10.0],
     fill_opacity = 0.8,
-    line_opacity=0.2,
+    line_opacity=0,
     legend_name='Average UV Value',
     smooth_factor=0).add_to(phoenix_map)
 ##heat morbidities
@@ -91,9 +111,9 @@ folium.Choropleth(
     fill_color = 'RdPu',
     bins = [0,5,15,30,45,60,100,200,340],
     fill_opacity = 0.8,
-    line_opacity=0.2,
+    line_opacity=0,
     legend_name='Heat Morbidities',
-    smooth_factor=0).add_to(phoenix_map)
+    smooth_factor=0).add_to(phoenix_map)"""
 
 #adding interactivity
 style_function = lambda x: {'fillColor': '#ffffff', 

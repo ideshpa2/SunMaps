@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <GroundOverlay>
+    <name>LCZC [Majority Filter]</name>
+    <description></description>
+    <Icon>
+      <href>2016_0504_LCZ_PHOENIX_filter_3x3.png</href>
+    </Icon>
+    <LatLonBox>
+      <north>34.09861</north>
+      <south>32.651710000000001</south>
+      <east>-111.14831</east>
+      <west>-112.82271</west>
+    </LatLonBox>
+  </GroundOverlay>
+</kml>
