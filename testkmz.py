@@ -48,6 +48,8 @@ def geotiff_overlay_bounds(bounds):
     print(f"Converted GeoTIFF Overlay Bounds: {image_bounds}")  # Debug: Print converted bounds
     return image_bounds
 
+
+
 def kml_overlay_bounds(kml_file_path):
     tree = ET.parse(kml_file_path)
     root = tree.getroot()
@@ -76,7 +78,14 @@ kml_file_path = '2016_0504_LCZ_PHOENIX_filter_3x3.kml'
 geotiff_file_path = 'mrt_20120627_1300.tif'
 
 # Create the map with the LCZ and MRT overlay
-map = folium.Map(location=[33.4484, -112.0740], zoom_start=10)
+html = "
+
+"
+map = folium.Map(location=[33.4484, -112.0740], zoom_start=10).add_child(
+     folium.ClickForMarker(
+         "<b>Lat:</b> ${lat}<br /><b>Lon:</b> ${lng}"
+         )
+    )
 
 # Get KML overlay bounds
 kml_bounds = kml_overlay_bounds(kml_file_path)
