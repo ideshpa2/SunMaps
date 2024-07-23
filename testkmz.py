@@ -62,6 +62,7 @@ def kml_overlay_bounds(kml_file_path):
     east = float(lat_lon_box.find('kml:east', namespace).text)
     west = float(lat_lon_box.find('kml:west', namespace).text)
     
+    #huadhfdjsljasodjf
     # Define the bounds for the image overlay
     image_bounds = [
         [south, west],  # Bottom-left corner
