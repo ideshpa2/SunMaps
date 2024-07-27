@@ -1,4 +1,5 @@
 # Our project for altREU: Design, Program, and Use Computers to Benefit Society
+## Heading 2
 
 - Point 1
 - Point 2
