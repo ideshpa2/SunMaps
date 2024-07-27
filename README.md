@@ -1,4 +1,4 @@
-Our project for altREU: Design, Program, and Use Computers to Benefit Society
+# Our project for altREU: Design, Program, and Use Computers to Benefit Society
 
 A work in progress, SunMaps is an interactive map application for Phoenix geared for heat/cooling infrastructure. It includes a web interface similar to that of Google Maps, with numerous marked locations.
 These locations are marked as prime spots for cooling infrastructure based on geographic data such as the UV index, heat related deaths in the area, pre-existing infrastructure, and walkability. 
