@@ -12,24 +12,6 @@ import json
 # Create the map
 fmap = folium.Map(location=[33.4484, -112.0740], zoom_start=10)
 
-#Opening MRT data
-tiff_path = "mrt_20120627_1300.tif"
-dst_crs = 'EPSG:4326'
-
-src = rasterio.open(tiff_path)
-band = src.read(1)[::100, ::100]
-
-transform, width, height = calculate_default_transform(
-    src.crs, dst_crs, src.width, src.height, *src.bounds)
-simplified_transform = from_origin(src.bounds.left, src.bounds.top, src.res[0] * 100, src.res[1] * 100)
-simplified_data = band.tolist()
-
-with open("simplified_mrt_data.json", "w") as f:
-    json.dump({
-        "transform": list(simplified_transform),
-        "data": simplified_data
-    }, f)
-
 #LCZ image path and bounds
 image_path = "2016_0504_LCZ_PHOENIX_filter_3x3.png"
 lcz_bounds = [[32.651710000000001, -112.82271], [34.09861, -111.14831]]
@@ -50,7 +32,7 @@ image_overlay.add_to(fmap)
 mrt_overlay = folium.raster_layers.ImageOverlay(
     name = "MRT",
     image = "geotiff_image.png",
-    bounds = [[src.bounds.bottom, src.bounds.left], [src.bounds.top, src.bounds.right]],
+    bounds = [[33.23, -112.44], [33.68 , -111.83]],
     opacity = 0.6
 )
 mrt_overlay.add_to(fmap)
