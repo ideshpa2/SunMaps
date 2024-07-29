@@ -21,8 +21,8 @@ tiles = "https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg
 fmap = folium.Map(
                 max_bounds=True,
                 location=[33.4484, -112.0740],
-                tiles = tiles, 
-                attr = attr, 
+               # tiles = tiles, 
+                #attr = attr, 
                 zoom_start=15,
                 min_lat=33.23,
                 max_lat=33.68,
@@ -36,7 +36,7 @@ image_overlay = ImageOverlay(
     name="LCZ",
     image="2016_0504_LCZ_PHOENIX_filter_3x3.png",
     bounds=[[32.651710000000001, -112.82271], [34.09861, -111.14831]],
-    opacity=0.6
+    opacity=0.3
 )
 image_overlay.add_to(fmap)
 
@@ -44,7 +44,7 @@ mrt_overlay = folium.raster_layers.ImageOverlay(
     name = "MRT",
     image = "geotiff_image.png",
     bounds = [[33.23, -112.44], [33.68 , -111.83]],
-    opacity = 0.6
+    opacity = 0.3
 )
 mrt_overlay.add_to(fmap)
 
