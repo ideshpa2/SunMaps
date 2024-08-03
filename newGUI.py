@@ -73,7 +73,7 @@ with open("popup.js", "w") as f:
     f.write(js_content)
 
 # Open the map in the browser
-webbrowser.open("lcz.html")
+#webbrowser.open("lcz.html")
 
 
 ###Get MRT Distribution and Percentile
