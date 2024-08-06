@@ -18,32 +18,34 @@ document.addEventListener("DOMContentLoaded", function() {
         return null;
     }
 
-
+var mrtData;
+var transform; 
     fetch('simplified_mrt_data.json')
         .then(response => response.json())
         .then(data => {
-            var mrtData = data.data;
-            var transform = data.transform;
+            mrtData = data.data;
+            transform = data.transform;
 
-            function map_to_mrt_coords(lat, lon, transform) {
-                var a = transform[0];
-                var b = transform[1];
-                var c = transform[2];
-                var d = transform[3];
-                var e = transform[4];
-                var f = transform[5];
-                var col = Math.round((lon - c) / a);
-                var row = Math.round((lat - f) / e);
-                return [row, col];
+    function map_to_mrt_coords(lat, lon, transform) {
+        var a = transform[0];
+        var b = transform[1];
+        var c = transform[2];
+        var d = transform[3];
+        var e = transform[4];
+        var f = transform[5];
+        var col = Math.round((lon - c) / a);
+        var row = Math.round((lat - f) / e);
+        return [row, col];
+    }
+
+    function getTemperature(coords) {
+        var row = coords[0], col = coords[1];
+        if (row >= 0 && row < mrtData.length && col >= 0 && col < mrtData[0].length) {
+            return mrtData[row][col];
+        } else {
+            return "No data";
             }
-            function getTemperature(coords) {
-                var row = coords[0], col = coords[1];
-                if (row >= 0 && row < mrtData.length && col >= 0 && col < mrtData[0].length) {
-                    return mrtData[row][col];
-                } else {
-                    return "No data";
-                }
-            }
+        }
 
     function map_to_image_coords(lat, lon, bounds, imageSize) {
         var latMin = bounds[0][0], lonMin = bounds[0][1], latMax = bounds[1][0], lonMax = bounds[1][1];
@@ -113,6 +115,9 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             console.error('Map object not found.');
         }
+
     };
 })
+
 })
+
