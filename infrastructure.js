@@ -3,10 +3,30 @@ const residential = [
     "MF Residential",
     "PUD"
 ]
+
+const means = {
+  "LCZ F (Bare Soil or Sand)": 67.58701116874026,
+  "LCZ 10 (Heavy Industry)": 66.60888252148997,
+  "LCZ 6 (Open Low Rise)": 65.57173256792201,
+  "LCZ 8 (Large Low-rise)": 66.12964671567606,
+  "LCZ B (Scattered Trees)": 65.69098712446352,
+  "LCZ D (Low Plants)": 67.31403522628544,
+  "LCZ 9 (Sparsely Built)": 66.57736223729935,
+  "LCZ E (Bare rock or paved)": 67.5252585521082,
+  "LCZ 5 (Open Midrise)": 64.99131137603557,
+  "LCZ C (Bush, Scrub)": 67.68946705832984,
+  "LCZ G (Water)": 66.87418936446174,
+  "LCZ 7 (Lightweight Low-rise)": 66.21371769383698,
+  "LCZ 4 (Open High-rise)": 66.15862068965517,
+  "LCZ A (Dense Trees)": 64.49685534591195
+};
+
+export var tempreduction = 0;
+
 //tree canopy infrastructure
 export function treecanopy(lcz, mrt, zoning) {
+  let solution = "No tree canopy";
     // trees work best in low rise, low density neighborhoods
-    let projectedMrt = mrt;
     const bestLczs = [
         "LCZ 6 (Open Low Rise)",
         "LCZ 7 (Lightweight Low-rise)", 
@@ -16,17 +36,17 @@ export function treecanopy(lcz, mrt, zoning) {
 
     let treeType = "";
     if (bestLczs.includes(lcz)) {
-        if (mrt > medians[lcz]) {
-            treeType = "Non-native deciduous and evergreen trees";
-            projectedMrt -= 13;
-        } else if (mrt === medians[lcz]) {
+        if (mrt > means[lcz]) {
+            treeType = "non-native deciduous and evergreen trees";
+            tempreduction  += 13;
+        } else if (mrt === means[lcz]) {
             treeType = "Native trees";
-            projectedMrt -= 8.8;
+            tempreduction += 8.8;
         } else {
             treeType = "Phoenix Palm trees";
-            projectedMrt -= 5.6;
+            tempreduction += 5.6;
         }
-    }
+    
 
     let percentage = 0;
     if (zoning == "Commercial") {
@@ -37,9 +57,9 @@ export function treecanopy(lcz, mrt, zoning) {
         percentage = 25;
     }
 
-    let solution = `For LCZ '${lcz}', MRT ${mrt}, and zoning '${zoning}',
-            we recommend a ${percentage}% increase in tree canopy cover with ${treeType},
-            with a projected mean radiant temperature of ${projectedMrt} °C.`;
+    solution = `${percentage}% increase in tree canopy cover with ${treeType}`;
+            //with a projected mean radiant temperature of ${projectedMrt} °C.`;
+  }
     return solution;
 }
 
@@ -47,6 +67,7 @@ export function treecanopy(lcz, mrt, zoning) {
 
 //water mister infrastructure
 export function watermister(lcz, mrt, zoning) {
+  let solution = "no water misters";
     const bestLczs = [
         "LCZ 4 (Open High-rise)",
         "LCZ 5 (Open Midrise)", 
@@ -54,12 +75,11 @@ export function watermister(lcz, mrt, zoning) {
         "LCZ 8 (Large Low-rise)",
         "LCZ 10 (Heavy Industry)"
     ];
-    
-    let solution;
     if (bestLczs.includes(lcz)) {
         if (zoning === 'commercial' || zoning === 'industrial') {
-            solution = `For LCZ '${lcz}', MRT ${mrt}, and zoning '${zoning}',
-            recommended water misters would result in a projected mean radiant temperature of ${mrt - 8.2} °C`;
+            solution = 
+            `water misters`;
+            tempreduction += 8.2
         }
     }
     return solution;
@@ -69,6 +89,7 @@ export function watermister(lcz, mrt, zoning) {
 
 // reflective pavement infrastructure
 export function pavement(lcz, mrt, zoning) {
+   let solution = "no reflective pavement";
     const lowriseLczs = [
         "LCZ 9 (Sparsely Built)", 
         "LCZ D (Low Plants)",   
@@ -82,24 +103,22 @@ export function pavement(lcz, mrt, zoning) {
     ];
 
     let albedo;
-    if (mrt > medians[lcz]) {
+    if (mrt > means[lcz]) {
         albedo = 0.7;
-    } else if (mrt === medians[lcz]) {
+    } else if (mrt === means[lcz]) {
         albedo = 0.5;
     } else {
         albedo = 0.3;
     }
 
-    let projectedMrt;
     if (lowriseLczs.includes(lcz)) {
-        projectedMrt = mrt - 27;
+        tempreduction += 27;
     } else if (highriseLczs.includes(lcz)) {
-        projectedMrt = mrt - 14;
+        tempreduction += 14;
     }
 
-    return `For LCZ '${lcz}', MRT ${mrt}, and zoning '${zoning}',
-            we recommend that reflective pavement of a ${albedo} albedo 
-            would result in a projected mean radiant temperature of ${projectedMrt} °C`;
+    return `reflective pavement with a ${albedo} albedo`; 
+            //would result in a projected mean radiant temperature of ${projectedMrt} °C`;
 }
 
 
@@ -116,11 +135,11 @@ export function coolroof(lcz, mrt, zoning) {
     ];
     
     if (bestLczs.includes(lcz) && zoning === "residential") {
-        projectedMrt = mrt - 0.3;
+        tempreduction += 0.3;
     }
     
-    return `For LCZ '${lcz}', MRT ${mrt}, and zoning '${zoning}',
-            recommended cool roofs would result in a projected mean radiant temperature of ${mrt - 8.2} °C`;
+    return `cool roofs`;
+    // would result in a projected mean radiant temperature of ${mrt - 8.2} °C`;
 }
 
 

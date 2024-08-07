@@ -30,9 +30,7 @@ def pavement_infrastructure(lcz, mrt, zoning):
     if lcz in  highrise_lczs:
         projected_mrt = mrt-14
     
-    return f"For LCZ '{lcz}', MRT {mrt}, and zoning '{zoning}',
-            we recommend that reflective pavement of a {albedo} albedo 
-            would result in a projected mean radiant temperature  of {projected_mrt} °C"
+    solution = f"For LCZ '{lcz}', MRT {mrt}, and zoning '{zoning}',we recommend that reflective pavement of a {albedo} albedo  would result in a projected mean radiant temperature  of {projected_mrt} °C"
 
 
 
@@ -50,8 +48,7 @@ def cool_roof_infrastructure(lcz, mrt, zoning):
     if lcz in best_lczs and zoning == "residential":
         projected_mrt = mrt-0.3
     
-    return f"For LCZ '{lcz}', MRT {mrt}, and zoning '{zoning}',
-            recommended cool roofs would result in a projected mean radiant temperature  of {mrt - 8.2} °C"
+    return f"For LCZ '{lcz}', MRT {mrt}, and zoning '{zoning}',recommended cool roofs would result in a projected mean radiant temperature  of {mrt - 8.2} °C"
 
 #water_mister_infrastructure
 def water_mister_infrastructure(lcz, mrt, zoning):
@@ -64,8 +61,7 @@ def water_mister_infrastructure(lcz, mrt, zoning):
     )
     if(lcz in best_lczs):
         if(zoning == 'commercial' or zoning == 'industrial'):
-            solution = f"For LCZ '{lcz}', MRT {mrt}, and zoning '{zoning}',
-            recommended water misters would result in a projected mean radiant temperature  of {mrt - 8.2} °C"
+            solution = f"For LCZ '{lcz}', MRT {mrt}, and zoning '{zoning}',recommended water misters would result in a projected mean radiant temperature  of {mrt - 8.2} °C"
     return solution
         
 #Tree Canopy "Table"
@@ -101,9 +97,7 @@ def tree_canopy_infrastructure(lcz, mrt, zoning):
     if(zoning == "residential"):
         percentage = 25
     
-    solution += f"For LCZ '{lcz}', MRT {mrt}, and zoning '{zoning}',
-            we recommend a {percentage}% increase in tree canopy cover with {tree_type},
-            with a projeted mean radiant temperature of {projected_mrt} °C."
+    solution += f"For LCZ '{lcz}', MRT {mrt}, and zoning '{zoning}', we recommend a {percentage}% increase in tree canopy cover with {tree_type}, with a projeted mean radiant temperature of {projected_mrt} °C."
     return solution
 
 
@@ -115,13 +109,14 @@ with open('lcz_mrt_data.json', 'r') as f:
 
 
 # Create plots for each LCZ
-medians = {}
+means = {}
 for lcz, mrts in lcz_mrt_data.items():
     mrts_non_zero = [mrt for mrt in mrts if mrt != 0]
     mrt_mean = np.mean(mrts_non_zero)
     mrt_median = np.median(mrts_non_zero)
     mrt_range = (min(mrts_non_zero), max(mrts_non_zero))
-    medians[lcz] = mrt_median
+    means[lcz] = mrt_mean
+    print(lcz, ": " , means[lcz], ",")
 
 
 

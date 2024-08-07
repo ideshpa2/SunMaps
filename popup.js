@@ -1,4 +1,4 @@
-import { treecanopy, watermister, coolroof, pavement, shade} from './infrastructure.js'
+import { treecanopy, watermister, coolroof, pavement, shade, tempreduction} from './infrastructure.js'
 
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM fully loaded and parsed");
@@ -119,7 +119,6 @@ document.addEventListener("DOMContentLoaded", function () {
       image.src = "2016_0504_LCZ_PHOENIX_filter_3x3.png";
       image.onload = function () {
         var map = findMap();
-
         var zoningLayer;
         fetch('zoning.geojson')
         .then(response => response.json())
@@ -163,8 +162,13 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Temperature:", temperature);
 
             // Use determine_shade_phoenix function to get the shade type and temperature reduction
-            var result = shade(zone, temperature);
+            let solution = `For ${zone}, MRT ${temperature} °C, and ${zoningType} zoning, we recommend:<br> A `;
+            solution += treecanopy(zone, temperature, zoningType) + ', ' + watermister(zone,temperature,zoningType) + ', ' + coolroof(zone, temperature, zoningType) + 
+            ', and ' + pavement(zone, temperature, zoningType) + ' for a total projected temperature reduction of ' + tempreduction + '°C.'; 
             
+
+            var result = shade(zone, temperature);
+            var tree_result = treecanopy(zone, temperature, zoningType);
 
             console.log("Shade recommendation:", result);
 
@@ -177,6 +181,8 @@ document.addEventListener("DOMContentLoaded", function () {
                   temperature +
                   "°C<br>Zoning: "+
                   zoningType +
+                  "<br> Solution: " + 
+                  solution + 
                   "<br>Recommended Shade: " +
                   result[0] +
                   "<br>Temperature Reduction: " +
