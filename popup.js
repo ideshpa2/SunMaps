@@ -1,4 +1,4 @@
-import { treecanopy, watermister, coolroof, pavement, shade, tempreduction} from './infrastructure.js'
+import { treecanopy, watermister, coolroof, pavement, shade, resetTemp, tempreduction} from './infrastructure.js'
 
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM fully loaded and parsed");
@@ -164,13 +164,9 @@ document.addEventListener("DOMContentLoaded", function () {
             // Use determine_shade_phoenix function to get the shade type and temperature reduction
             let solution = `For ${zone}, MRT ${temperature} °C, and ${zoningType} zoning, we recommend:<br> A `;
             solution += treecanopy(zone, temperature, zoningType) + ', ' + watermister(zone,temperature,zoningType) + ', ' + coolroof(zone, temperature, zoningType) + 
-            ', and ' + pavement(zone, temperature, zoningType) + ' for a total projected temperature reduction of ' + tempreduction + '°C.'; 
-            
+            ', ' + pavement(zone, temperature, zoningType) + ', and ' + shade(zone, temperature, zoningType) + ' for a total projected temperature reduction of ' + tempreduction + '°C.'; 
+            resetTemp();
 
-            var result = shade(zone, temperature);
-            var tree_result = treecanopy(zone, temperature, zoningType);
-
-            console.log("Shade recommendation:", result);
 
             L.popup()
               .setLatLng(e.latlng)
@@ -182,12 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   "°C<br>Zoning: "+
                   zoningType +
                   "<br> Solution: " + 
-                  solution + 
-                  "<br>Recommended Shade: " +
-                  result[0] +
-                  "<br>Temperature Reduction: " +
-                  result[1] +
-                  "°C"
+                  solution 
               )
               .openOn(map);
           });

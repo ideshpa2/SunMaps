@@ -21,7 +21,7 @@ const means = {
   "LCZ A (Dense Trees)": 64.49685534591195
 };
 
-export var tempreduction = 0;
+export let tempreduction = 0;
 
 //tree canopy infrastructure
 export function treecanopy(lcz, mrt, zoning) {
@@ -76,7 +76,7 @@ export function watermister(lcz, mrt, zoning) {
         "LCZ 10 (Heavy Industry)"
     ];
     if (bestLczs.includes(lcz)) {
-        if (zoning === 'commercial' || zoning === 'industrial') {
+        if (zoning === 'Commercial' || zoning === 'Industrial') {
             solution = 
             `water misters`;
             tempreduction += 8.2
@@ -134,7 +134,7 @@ export function coolroof(lcz, mrt, zoning) {
         "LCZ D (Low Plants)" 
     ];
     
-    if (bestLczs.includes(lcz) && zoning === "residential") {
+    if (bestLczs.includes(lcz) && residential.includes(lcz)) {
         tempreduction += 0.3;
     }
     
@@ -142,10 +142,66 @@ export function coolroof(lcz, mrt, zoning) {
     // would result in a projected mean radiant temperature of ${mrt - 8.2} °C`;
 }
 
-
+export function resetTemp(){ 
+  tempreduction = 0; 
+  console.log("temp reset");
+}
 
 //artificial shade infrastructure
-export function shade(lcz, mrt) {
+
+export function shade(lcz, mrt, zoning) {
+  if (['LCZ 4 (Open High-rise)', 'LCZ 5 (Open Midrise)'].includes(lcz)) {
+      if (mrt > 35) {
+        tempreduction += 23.4;
+          return 'Breezeway';
+      } else {
+        tempreduction +=15.5;
+          return 'Tunnel';
+  }
+ } else if (['LCZ 6 (Open Low Rise)', 'LCZ 7 (Lightweight Low-rise)', 'LCZ 8 (Large Low-rise)'].includes(lcz)) {
+      if (mrt > 30) {
+        tempreduction += 15.5;
+          return 'Overhang';
+      } else {
+        tempreduction += 15.5;
+          return 'Arcade';
+  }
+ } else if (['LCZ 9 (Sparsely Built)', 'LCZ 10 (Heavy Industry)'].includes(lcz)) {
+      if (zoning == 'Industrial') {
+        tempreduction+= 6.9;
+          return 'PVC_Umbrella';
+      } else {
+        tempreduction += 15.5;
+          return 'Overhang';
+  }
+ } else if (['LCZ A (Dense Trees)', 'LCZ B (Scattered Trees)'].includes(lcz)) {
+      if (residential.includes(zoning)) {
+        tempreduction += 6.9;
+          return 'Cloth_Umbrella';
+      } else {
+        tempreduction += 15.5;
+          return 'Tunnel';
+  } 
+}else if (['LCZ C (Bush, Scrub)', 'LCZ D (Low Plants)'].includes(lcz)) {
+  tempreduction += 15.5;
+      return 'Tunnel';
+  } else if (['LCZ E (Bare rock or paved)', 'LCZ F (Bare Soil or Sand)'].includes(lcz)) {
+      if (zoning == 'Commercial') {
+        tempreduction += 15.5;
+          return 'Arcade';
+      } else {
+        tempreduction += 15.5;
+          return 'Tunnel';
+  }
+ } else if (lcz == 'LCZ G (Water)') {
+  tempreduction += 6.9;
+      return 'Cloth Umbrella';
+  } else {
+      return 'no shade';
+      }
+}
+/*export 
+function shade(lcz, mrt) {
     console.log("Determining shade for LCZ and MRT:", lcz, mrt);
     if (
       lcz === "LCZ 4 (Open High-rise)" ||
@@ -191,4 +247,4 @@ export function shade(lcz, mrt) {
     } else {
       return ["No shade needed", 0.0];
     }
-  }
+  }*/
