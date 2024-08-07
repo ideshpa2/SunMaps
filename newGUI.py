@@ -10,6 +10,7 @@ from matplotlib import pyplot
 import json
 import numpy as np
 from collections import defaultdict
+import geopandas as gpd
 
 #satellite map tile
 attr = (
@@ -30,6 +31,13 @@ fmap = folium.Map(
                 max_lon=-112.44,
                 )
 
+#add zoning
+zoning = "zoning.geojson"
+folium.GeoJson(
+    data = zoning,
+    name = 'Zoning',
+    id = 'zoninglayer'
+    ).add_to(fmap)
 
 # Add the image overlay
 image_overlay = ImageOverlay(
@@ -58,7 +66,7 @@ with open("lcz.html", "r") as f:
 # Insert the JavaScript link before the closing </body> tag
 for i, line in enumerate(lines):
     if "</body>" in line:
-        lines.insert(i, '<script src="popup.js"></script>\n')
+        lines.insert(i, '<script type="module" src="popup.js"></script>\n')
         break
 
 # Write the modified HTML back to the file
@@ -76,7 +84,7 @@ with open("popup.js", "w") as f:
 #webbrowser.open("lcz.html")
 
 
-###Get MRT Distribution and Percentile
+"""###Get MRT Distribution and Percentile
 with open('simplified_mrt_data.json', 'r') as file:
     mrt_data = json.load(file)
 
@@ -122,4 +130,4 @@ def find_mrt_percentile(lcz, mrt_value):
     if lcz not in lcz_mrt_dict or not lcz_mrt_dict[lcz]:
         return None
     mrt_values = lcz_mrt_dict[lcz]
-    return np.sum(mrt_values <= mrt_value) / len(mrt_values) * 100
+    return np.sum(mrt_values <= mrt_value) / len(mrt_values) * 100"""

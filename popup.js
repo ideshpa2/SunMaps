@@ -1,3 +1,5 @@
+import { treecanopy, watermister, coolroof, pavement, shade} from './infrastructure.js'
+
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM fully loaded and parsed");
   console.log("Javascript Loaded");
@@ -108,62 +110,42 @@ document.addEventListener("DOMContentLoaded", function () {
         return zone;
       }
 
-      function determine_shade_phoenix(lcz, mrt) {
-        console.log("Determining shade for LCZ and MRT:", lcz, mrt);
-        if (
-          lcz === "LCZ 4 (Open High-rise)" ||
-          lcz === "LCZ 5 (Open Midrise)"
-        ) {
-          if (mrt > 35) {
-            return ["Breezeway", 23.4];
-          } else {
-            return ["Tunnel", 15.5];
-          }
-        } else if (
-          lcz === "LCZ 6 (Open Low Rise)" ||
-          lcz === "LCZ 7 (Lightweight Low-rise)" ||
-          lcz === "LCZ 8 (Large Low-rise)"
-        ) {
-          if (mrt > 30) {
-            return ["Overhang", 15.5];
-          } else {
-            return ["Arcade", 15.5];
-          }
-        } else if (
-          lcz === "LCZ 9 (Sparsely Built)" ||
-          lcz === "LCZ 10 (Heavy Industry)"
-        ) {
-          return ["Overhang", 15.5];
-        } else if (
-          lcz === "LCZ A (Dense Trees)" ||
-          lcz === "LCZ B (Scattered Trees)"
-        ) {
-          return ["Cloth_Umbrella", 6.9];
-        } else if (
-          lcz === "LCZ C (Bush, Scrub)" ||
-          lcz === "LCZ D (Low Plants)"
-        ) {
-          return ["Tunnel", 15.5];
-        } else if (
-          lcz === "LCZ E (Bare rock or paved)" ||
-          lcz === "LCZ F (Bare Soil or Sand)"
-        ) {
-          return ["Arcade", 15.5];
-        } else if (lcz === "LCZ G (Water)") {
-          return ["Cloth_Umbrella", 6.9];
-        } else {
-          return ["No shade needed", 0.0];
-        }
-      }
+
+
+    
+     
 
       var image = new Image();
       image.src = "2016_0504_LCZ_PHOENIX_filter_3x3.png";
       image.onload = function () {
         var map = findMap();
+
+        var zoningLayer;
+        fetch('zoning.geojson')
+        .then(response => response.json())
+        .then(data => {
+          zoningLayer = L.geoJSON(data)
+        });
+
+        function getZoningTypeAtLocation(lat, lng) {
+          var zoningType = null;
+          
+          // Iterate through all zoning features
+          zoningLayer.eachLayer(function(layer) {
+              if (layer.getBounds().contains([lat, lng])) {
+                  zoningType = layer.feature.properties.GEN_ZONE; // Adjust this to match your GeoJSON structure
+              }
+          });
+          
+          return zoningType;
+      }
+
+        //var zoningType = L.geoJSON(zoningLayer).addTo(map);
         if (map) {
           map.on("click", function (e) {
             var lat = e.latlng.lat;
             var lon = e.latlng.lng;
+            var zoningType = getZoningTypeAtLocation(lat, lon);
             var LCZcoords = map_to_image_coords(
               lat,
               lon,
@@ -177,12 +159,12 @@ document.addEventListener("DOMContentLoaded", function () {
             var zone = colorToZone(color);
             var MRTcoords = map_to_mrt_coords(lat, lon, transform);
             var temperature = getTemperature(MRTcoords);
-
             console.log("Zone:", zone);
             console.log("Temperature:", temperature);
 
             // Use determine_shade_phoenix function to get the shade type and temperature reduction
-            var result = determine_shade_phoenix(zone, temperature);
+            var result = shade(zone, temperature);
+            
 
             console.log("Shade recommendation:", result);
 
@@ -193,7 +175,9 @@ document.addEventListener("DOMContentLoaded", function () {
                   zone +
                   "<br>Mean Radiant Temperature: " +
                   temperature +
-                  "°C<br>Recommended Shade: " +
+                  "°C<br>Zoning: "+
+                  zoningType +
+                  "<br>Recommended Shade: " +
                   result[0] +
                   "<br>Temperature Reduction: " +
                   result[1] +
