@@ -1,4 +1,4 @@
-import { treecanopy, watermister, coolroof, pavement, shade, resetTemp, tempreduction} from './infrastructure.js'
+import { treecanopy, watermister, coolroof, pavement, shade} from './infrastructure.js'
 
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM fully loaded and parsed");
@@ -162,25 +162,25 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Temperature:", temperature);
 
             // Use determine_shade_phoenix function to get the shade type and temperature reduction
-            let solution = `For ${zone}, MRT ${temperature} °C, and ${zoningType} zoning, we recommend:<br> A `;
-            solution += treecanopy(zone, temperature, zoningType) + ', ' + watermister(zone,temperature,zoningType) + ', ' + coolroof(zone, temperature, zoningType) + 
-            ', ' + pavement(zone, temperature, zoningType) + ', and ' + shade(zone, temperature, zoningType) + ' for a total projected temperature reduction of ' + tempreduction + '°C.'; 
-            resetTemp();
+            let solution = treecanopy(zone, temperature, zoningType) + watermister(zone,temperature,zoningType) + coolroof(zone, temperature, zoningType) + 
+            pavement(zone, temperature, zoningType) + " -" + shade(zone, temperature, zoningType);
 
-
-            L.popup()
-              .setLatLng(e.latlng)
-              .setContent(
-                "Climate Zone: " +
+           // e.preventDefault(); 
+            let message =  'Climate Zone: ' +
                   zone +
-                  "<br>Mean Radiant Temperature: " +
+                  '<br>Mean Radiant Temperature: ' +
                   temperature +
-                  "°C<br>Zoning: "+
+                  '°C<br>Zoning: '+
                   zoningType +
-                  "<br> Solution: " + 
-                  solution 
-              )
-              .openOn(map);
+                  '<br> Solutions: <br>' + 
+                  solution;
+       
+              //window.sideMenuWindow = window.open('index.html', 'side-menu');
+             //window.getElementbyID('side-menu').innerHTML = message;
+             let event = new CustomEvent('updateSideMenu', { detail: message });
+             window.parent.document.dispatchEvent(event);  
+          //window.sideMenuWindow.postMessage(message, '*');   
+
           });
         } else {
           console.error("Map object not found.");

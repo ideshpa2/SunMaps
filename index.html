@@ -28,24 +28,32 @@
             height: 100%;
             border: none;
         }
-        .side-menu{
+        #menu-header{
             flex: 2;
             background-color: blanchedalmond;
             display: flex;
             flex-direction: column;
             text-align: center;
             border: none;
+        }
+        #side-menu{
+            flex: 2;
+            background-color: blanchedalmond;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            border: none;
             padding: 20px;
         }
-        .side-menu h2 {
+        #side-menu h2 {
             margin-top: 10px;
         }
-        .side-menu ul {
+        #side-menu ul {
             list-style-type: none;
             padding: 10px;
             width: 100%;
         }
-        .side-menu ul li {
+        #side-menu ul li {
             margin-bottom: 10px;
             width: 100%;
         }
@@ -59,10 +67,19 @@
     <div class="map-container">
         <iframe src="lcz.html"></iframe>
     </div>
-    <div class = "side-menu">
-        <h2>Menu</h2>
+    <div id = "menu-header">
+        <h2>Menu <br> </h2>
+
+        <div id = "side-menu">
             <p>Click on a marker to see more information</p>
-    </div>
+        </div>
+            <script>
+    document.addEventListener('updateSideMenu', function(event) {
+        document.getElementById('side-menu').innerHTML = event.detail;
+    });
+
+            </script>
+</div>
     </div>
 </body>
 </html>

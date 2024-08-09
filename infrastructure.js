@@ -21,11 +21,12 @@ const means = {
   "LCZ A (Dense Trees)": 64.49685534591195
 };
 
-export let tempreduction = 0;
+//export let tempreduction = 0;
 
 //tree canopy infrastructure
 export function treecanopy(lcz, mrt, zoning) {
-  let solution = "No tree canopy";
+  let tempreduction = 0;
+  let solution = "- No tree canopy <br>";
     // trees work best in low rise, low density neighborhoods
     const bestLczs = [
         "LCZ 6 (Open Low Rise)",
@@ -57,8 +58,8 @@ export function treecanopy(lcz, mrt, zoning) {
         percentage = 25;
     }
 
-    solution = `${percentage}% increase in tree canopy cover with ${treeType}`;
-            //with a projected mean radiant temperature of ${projectedMrt} °C.`;
+    solution = `- A ${percentage}% increase in tree canopy cover with ${treeType}
+            has a projected mean radiant temperature of ${tempreduction} °C. <br>`;
   }
     return solution;
 }
@@ -67,7 +68,8 @@ export function treecanopy(lcz, mrt, zoning) {
 
 //water mister infrastructure
 export function watermister(lcz, mrt, zoning) {
-  let solution = "no water misters";
+  let tempreduction = 0;
+  let solution = "";
     const bestLczs = [
         "LCZ 4 (Open High-rise)",
         "LCZ 5 (Open Midrise)", 
@@ -77,9 +79,10 @@ export function watermister(lcz, mrt, zoning) {
     ];
     if (bestLczs.includes(lcz)) {
         if (zoning === 'Commercial' || zoning === 'Industrial') {
+
+          tempreduction += 8.2
             solution = 
-            `water misters`;
-            tempreduction += 8.2
+            `- Water misters with a projected temperature reduction of ${tempreduction} °C. <br>`;
         }
     }
     return solution;
@@ -89,7 +92,8 @@ export function watermister(lcz, mrt, zoning) {
 
 // reflective pavement infrastructure
 export function pavement(lcz, mrt, zoning) {
-   let solution = "no reflective pavement";
+  let tempreduction = 0;
+   let solution = "";
     const lowriseLczs = [
         "LCZ 9 (Sparsely Built)", 
         "LCZ D (Low Plants)",   
@@ -113,12 +117,15 @@ export function pavement(lcz, mrt, zoning) {
 
     if (lowriseLczs.includes(lcz)) {
         tempreduction += 27;
+        return `- Reflective pavement with a ${albedo} albedo
+        , with a projected temperature reduction of of ${tempreduction} °C. <br>`;
     } else if (highriseLczs.includes(lcz)) {
         tempreduction += 14;
+        return `- Reflective pavement with a ${albedo} albedo
+        , with a projected temperature reduction of of ${tempreduction} °C. <br>`;
     }
+    return "";
 
-    return `reflective pavement with a ${albedo} albedo`; 
-            //would result in a projected mean radiant temperature of ${projectedMrt} °C`;
 }
 
 
@@ -138,18 +145,15 @@ export function coolroof(lcz, mrt, zoning) {
         tempreduction += 0.3;
     }
     
-    return `cool roofs`;
-    // would result in a projected mean radiant temperature of ${mrt - 8.2} °C`;
+    return `- cool roofs
+    would result in a projected temperature reduction of 8.2 °C <br>`;
 }
 
-export function resetTemp(){ 
-  tempreduction = 0; 
-  console.log("temp reset");
-}
 
 //artificial shade infrastructure
 
 export function shade(lcz, mrt, zoning) {
+ let tempreduction = 0;
   if (['LCZ 4 (Open High-rise)', 'LCZ 5 (Open Midrise)'].includes(lcz)) {
       if (mrt > 35) {
         tempreduction += 23.4;
@@ -161,41 +165,41 @@ export function shade(lcz, mrt, zoning) {
  } else if (['LCZ 6 (Open Low Rise)', 'LCZ 7 (Lightweight Low-rise)', 'LCZ 8 (Large Low-rise)'].includes(lcz)) {
       if (mrt > 30) {
         tempreduction += 15.5;
-          return 'Overhang';
+          return 'Overhang with a temperature reduction in ' + tempreduction + '°C <br>';
       } else {
         tempreduction += 15.5;
-          return 'Arcade';
+          return 'Arcade with a temperature reduction in ' + tempreduction + '°C <br>';
   }
  } else if (['LCZ 9 (Sparsely Built)', 'LCZ 10 (Heavy Industry)'].includes(lcz)) {
       if (zoning == 'Industrial') {
         tempreduction+= 6.9;
-          return 'PVC_Umbrella';
+          return 'PVC_Umbrella with a temperature reduction in ' + tempreduction + '°C <br>';
       } else {
         tempreduction += 15.5;
-          return 'Overhang';
+          return 'Overhang with a temperature reduction in ' + tempreduction + '°C <br>';
   }
  } else if (['LCZ A (Dense Trees)', 'LCZ B (Scattered Trees)'].includes(lcz)) {
       if (residential.includes(zoning)) {
         tempreduction += 6.9;
-          return 'Cloth_Umbrella';
+          return 'Cloth_Umbrella with a temperature reduction in ' + tempreduction + '°C <br>';
       } else {
         tempreduction += 15.5;
-          return 'Tunnel';
+          return 'Tunnel with a temperature reduction in ' + tempreduction + '°C <br>';
   } 
 }else if (['LCZ C (Bush, Scrub)', 'LCZ D (Low Plants)'].includes(lcz)) {
   tempreduction += 15.5;
-      return 'Tunnel';
+      return 'Tunnel with a temperature reduction in ' + tempreduction + '°C <br>';
   } else if (['LCZ E (Bare rock or paved)', 'LCZ F (Bare Soil or Sand)'].includes(lcz)) {
       if (zoning == 'Commercial') {
         tempreduction += 15.5;
-          return 'Arcade';
+          return 'Arcade with a temperature reduction in ' + tempreduction + '°C <br>';
       } else {
         tempreduction += 15.5;
-          return 'Tunnel';
+          return 'Tunnel with a temperature reduction in ' + tempreduction + '°C <br>';
   }
  } else if (lcz == 'LCZ G (Water)') {
   tempreduction += 6.9;
-      return 'Cloth Umbrella';
+      return 'Cloth Umbrella with a temperature reduction in ' + tempreduction + '°C <br>';
   } else {
       return 'no shade';
       }
