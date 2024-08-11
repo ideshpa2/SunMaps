@@ -6,12 +6,32 @@
     <title>Embedded Folium Map</title>
     <style>
         /* Ensure body and html have full height */
+        .tab {
+            overflow: hidden;
+            background-color: beige;
+        }
+        .tab button {
+            background-color: inherit;
+            float: center;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        .tab button.active {
+            background-color: #ccc;
+        }
+
         html, body {
             height: 100%;
             width: 100%;
             margin: 0;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-            background-color:blanchedalmond
+            background-color:beige
         }
         .container {
             display:flex;
@@ -30,50 +50,71 @@
         }
         #menu-header{
             flex: 2;
-            background-color: blanchedalmond;
+            background-color: beige;
             display: flex;
             flex-direction: column;
-            text-align: center;
+            text-align: center
+            ;
             border: none;
         }
         #side-menu{
             flex: 2;
-            background-color: blanchedalmond;
+            background-color: beige;
             display: flex;
             flex-direction: column;
             text-align: left;
             border: none;
             padding: 20px;
         }
-        #side-menu h2 {
-            margin-top: 10px;
-        }
-        #side-menu ul {
-            list-style-type: none;
-            padding: 10px;
-            width: 100%;
-        }
-        #side-menu ul li {
-            margin-bottom: 10px;
-            width: 100%;
-        }
+
 
     </style>
 </head>
 <body>
     <h1>SunMaps</h1>
     <h2>Sustainable Insights for Phoenix Urban Planning</h2>
+
     <div class="container">
     <div class="map-container">
         <iframe src="lcz.html"></iframe>
     </div>
     <div id = "menu-header">
         <h2>Menu <br> </h2>
-
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'Info')">Climate Info</button>
+            <button class="tablinks" onclick="openTab(event, 'Sources')">Cited Sources</button>
+        </div>
         <div id = "side-menu">
             <p>Click on a marker to see more information</p>
         </div>
             <script>
+         // Function to handle tab switching
+        function openTab(evt, tabName) {
+        // Change content based on the tab clicked
+        if (tabName === 'Info') {
+            // Default content or dynamic content as before
+            document.getElementById('side-menu').innerHTML = '<h2>Menu</h2><p>Click on a marker to see more information</p>';
+        } else if (tabName === 'Sources') {
+            // Load the list of cited sources
+            fetch('citations.txt')
+                .then(response => response.text())
+                .then(data => {
+                    let formattedData = data.split('\n');
+                    
+                    document.getElementById('side-menu').innerHTML = `
+                        <h2>Cited Sources</h2>
+                        <ul>${formattedData}</ul>`;
+                });
+        }
+        var tablinks = document.getElementsByClassName("tablinks");
+        for (var i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Add the active class to the current button
+        evt.currentTarget.className += " active";
+    }
+
     document.addEventListener('updateSideMenu', function(event) {
         document.getElementById('side-menu').innerHTML = event.detail;
     });

@@ -166,6 +166,8 @@ document.addEventListener("DOMContentLoaded", function () {
             pavement(zone, temperature, zoningType) + " -" + shade(zone, temperature, zoningType);
 
            // e.preventDefault(); 
+           L.popup().setLatLng(e.latlng).setContent(lat + ", " + lon).openOn(map);
+
             let message =  'Climate Zone: ' +
                   zone +
                   '<br>Mean Radiant Temperature: ' +

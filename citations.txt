@@ -1,0 +1,17 @@
+Papers on LCZ and MRT Data:
+
+C. Wang, A. Middel, S. W. Myint, S. Kaplan, A. J. Brazel, and J. Lukasczyk, “Assessing local climate zones in arid cities: The case of Phoenix, Arizona and Las Vegas, Nevada,” ISPRS Journal of Photogrammetry and Remote Sensing, vol. 141, pp. 59–71, Jul. 2018, doi: https://doi.org/10.1016/j.isprsjprs.2018.04.009.
+‌
+I. D. Stewart and T. R. Oke, “Local Climate Zones for Urban Temperature Studies,” Bulletin of the American Meteorological Society, vol. 93, no. 12, pp. 1879–1900, Dec. 2012, doi: https://doi.org/10.1175/bams-d-11-00019.1.
+‌
+Buo, I. and A. Middel, "Hourly Mean Radiant Temperature Distribution on a summer day (2012-06-27) in the greater Phoenix, Arizona (USA) metropolitan area," Environmental Data Initiative, ver. 1, Oct. 2022, doi: https://doi.org/10.6073/pasta/7a0df08b2615c51e58723643e693ce84.
+
+Papers on Infrastructure:
+
+A. Middel, N. Chhetri, and R. Quay, “Urban forestry and cool roofs: Assessment of heat mitigation strategies in Phoenix residential neighborhoods,” Urban Forestry & Urban Greening, vol. 14, no. 1, pp. 178–186, 2015, doi: https://doi.org/10.1016/j.ufug.2014.09.010.
+
+A. Middel, S. AlKhaled, F. A. Schneider, B. Hagen, and P. Coseo, “50 Grades of Shade,” Bulletin of the American Meteorological Society, vol. 102, no. 9, pp. E1805–E1820, Sep. 2021, doi: https://doi.org/10.1175/BAMS-D-20-0193.1.
+
+J. K. Vanos, M. K. Wright, A. Kaiser, A. Middel, H. Ambrose, and D. M. Hondula, “Evaporative misters for urban cooling and comfort: effectiveness and motivations for use,” International Journal of Biometeorology, vol. 66, no. 2, pp. 357–369, Nov. 2020, doi: https://doi.org/10.1007/s00484-020-02056-y.
+
+‌
