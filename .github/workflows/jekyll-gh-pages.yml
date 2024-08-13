@@ -29,13 +29,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
-      - name: Specify Python
-        uses: actions/setup-python@v4
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: '3.12.4'
-
-      - name: Create Python virtual environment
-        run: python -m venv sklearn-env
+          auto-update-conda: true
+          python-version: "3.12"
+          activate-environment: geo_env  # Replace with your Conda environment name
+          cache-dependencies: true
           
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -48,6 +48,8 @@ jobs:
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
 
   # Deployment job
   deploy:
