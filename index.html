@@ -1,126 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
     <title>Embedded Folium Map</title>
     <style>
-        /* Ensure body and html have full height */
-        .tab {
-            overflow: hidden;
-            background-color: beige;
-        }
-        .tab button {
-            background-color: inherit;
-            float: center;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .tab button:hover {
-            background-color: #ddd;
-        }
-
-        .tab button.active {
-            background-color: #ccc;
-        }
-
-        html, body {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            background-color:beige
-        }
-        .container {
-            display:flex;
-            height: 100%;
-            width: 100%;
-        }
-        .map-container {
-            flex: 4;
-            height: 100%;
-        }
-        /* Ensure iframe takes up full container size */
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        #menu-header{
-            flex: 2;
-            background-color: beige;
-            display: flex;
-            flex-direction: column;
-            text-align: center
-            ;
-            border: none;
-        }
-        #side-menu{
-            flex: 2;
-            background-color: beige;
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-            border: none;
-            padding: 20px;
-        }
-
-
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        font-family: Arial, Helvetica, sans-serif; /* Sans-serif font for a clean look */
+      }
+      .map-container {
+        position: relative;
+        height: 100%;
+        width: 100%;
+      }
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+      .side-menu {
+        position: absolute;
+        top: 100px; /* Moved up to be right under the zoom buttons */
+        left: 10px; /* Positioned on the left side */
+        width: 300px;
+        height: calc(100% - 100px); /* Fill the remaining height */
+        background-color: #f5f5dc; /* Beige background for a professional look */
+        padding: 20px;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        overflow-y: auto; /* Scrollable menu */
+        box-sizing: border-box;
+        resize: horizontal; /* Resizable horizontally */
+        min-width: 200px; /* Minimum width for the menu */
+        max-width: 50%; /* Maximum width for the menu */
+        z-index: 1000; /* Ensures the menu is above the map layers */
+      }
+      .tab {
+        display: flex; /* Display the buttons side by side */
+        justify-content: space-between; /* Add space between the buttons */
+        margin-bottom: 15px;
+      }
+      .tab button {
+        background-color: #d2b48c; /* Darker beige color for the buttons */
+        width: 48%; /* Set button width to ensure they fit side by side */
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 10px;
+        transition: 0.3s;
+        font-size: 16px;
+        font-family: Arial, Helvetica, sans-serif;
+        border-radius: 4px;
+      }
+      .tab button:hover {
+        background-color: #c3a384; /* Slightly darker on hover */
+      }
+      .tab button.active {
+        background-color: #b39574; /* Even darker when active */
+      }
+      h1,
+      h2 {
+        margin-top: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #333;
+      }
+      p {
+        line-height: 1.6;
+        color: #666;
+      }
     </style>
-</head>
-<body>
-    <h1>SunMaps</h1>
-    <h2>Sustainable Insights for Phoenix Urban Planning</h2>
-
-    <div class="container">
+  </head>
+  <body>
     <div class="map-container">
-        <iframe src="lcz.html"></iframe>
-    </div>
-    <div id = "menu-header">
-        <h2>Menu <br> </h2>
+      <iframe src="lcz.html"></iframe>
+      <div id="side-menu" class="side-menu">
+        <h1>SunMaps</h1>
+        <h2>Sustainable Insights for Phoenix Urban Planning</h2>
         <div class="tab">
-            <button class="tablinks" onclick="openTab(event, 'Info')">Climate Info</button>
-            <button class="tablinks" onclick="openTab(event, 'Sources')">Cited Sources</button>
+          <button class="tablinks active" onclick="openTab(event, 'Info')">
+            Climate Info
+          </button>
+          <button class="tablinks" onclick="openTab(event, 'Sources')">
+            Cited Sources
+          </button>
         </div>
-        <div id = "side-menu">
-            <p>Click on a marker to see more information</p>
+        <div id="side-menu-content">
+          <p>Click on a marker to see more information.</p>
         </div>
-            <script>
-         // Function to handle tab switching
-        function openTab(evt, tabName) {
-        // Change content based on the tab clicked
-        if (tabName === 'Info') {
-            // Default content or dynamic content as before
-            document.getElementById('side-menu').innerHTML = '<h2>Menu</h2><p>Click on a marker to see more information</p>';
-        } else if (tabName === 'Sources') {
-            // Load the list of cited sources
-            fetch('citations.txt')
-                .then(response => response.text())
-                .then(data => {
-                    let formattedData = data.split('\n');
-                    
-                    document.getElementById('side-menu').innerHTML = `
-                        <h2>Cited Sources</h2>
-                        <ul>${formattedData}</ul>`;
-                });
+      </div>
+    </div>
+
+    <script>
+      function openTab(evt, tabName) {
+        if (tabName === "Info") {
+          document.getElementById("side-menu-content").innerHTML =
+            "<p>Click on a marker to see more information.</p>";
+        } else if (tabName === "Sources") {
+          fetch("citations.txt")
+            .then((response) => response.text())
+            .then((data) => {
+              let formattedData = data
+                .split("\n")
+                .map((item) => `<li>${item}</li>`)
+                .join("");
+              document.getElementById("side-menu-content").innerHTML = `
+                            <h2>Cited Sources</h2>
+                            <ul>${formattedData}</ul>`;
+            });
         }
         var tablinks = document.getElementsByClassName("tablinks");
         for (var i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
+          tablinks[i].classList.remove("active");
         }
+        evt.currentTarget.classList.add("active");
+      }
 
-        // Add the active class to the current button
-        evt.currentTarget.className += " active";
-    }
-
-    document.addEventListener('updateSideMenu', function(event) {
-        document.getElementById('side-menu').innerHTML = event.detail;
-    });
-
-            </script>
-</div>
-    </div>
-</body>
+      document.addEventListener("updateSideMenu", function (event) {
+        document.getElementById("side-menu-content").innerHTML = event.detail;
+      });
+    </script>
+  </body>
 </html>
