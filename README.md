@@ -5,29 +5,29 @@ SunMaps is an interactive geospatial application designed to assist urban planne
 The tool provides a Google Maps–style web interface with clickable location markers, each backed by detailed environmental and infrastructural data. By synthesizing climate metrics and urban characteristics, SunMaps helps stakeholders make data-driven decisions for combating extreme heat in urban areas.
 
 # Features
-Interactive Mapping Interface – Navigate and zoom across Phoenix to explore potential cooling infrastructure sites.
+- Interactive Mapping Interface – Navigate and zoom across Phoenix to explore potential cooling infrastructure sites.
 
-Data-Driven Insights – Location markers display:
+- Data-Driven Insights – Location markers display:
 
-UV index levels
+- UV index levels
 
-Heat-related mortality data
+- Heat-related mortality data
 
-Existing infrastructure (parks, shaded areas, cooling centers)
+- Existing infrastructure (parks, shaded areas, cooling centers)
 
-Walkability scores and pedestrian traffic estimates
+- Walkability scores and pedestrian traffic estimates
 
-Targeted Infrastructure Recommendations – For each location, SunMaps suggests optimal cooling strategies such as:
+- Targeted Infrastructure Recommendations – For each location, SunMaps suggests optimal cooling strategies such as:
 
-Man-made shade structures
+- Man-made shade structures
 
-Tree planting or park creation
+- Tree planting or park creation
 
-Misting stations
+- Misting stations
 
-Industrial or community cooling fans
+- Industrial or community cooling fans
 
-Custom Decision Model – Implements a decision-tree algorithm trained on local climate data and urban conditions to rank and prioritize cooling interventions.
+- Custom Decision Model – Implements a decision-tree algorithm trained on local climate data and urban conditions to rank and prioritize cooling interventions.
 
 # Tech Stack
 Frontend: Python (Folium), HTML/CSS
